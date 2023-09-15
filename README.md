@@ -2,32 +2,48 @@
 
 Este código é uma implementação de um compilador source-to-source para participar do desafio <a href="https://raw.githubusercontent.com/aripiprazole/rinha-de-compiler">rinha de compiladores</a>. O qual recebe uma AST (Abstract Syntax Tree) como parâmentro em formato json, conforme o padrão estabelecido no desafio, e traduz para código em linguagem C, que por sua vez é compilado para binário e executado.
 
+## Dependências
+
+- <a href="https://github.com/akheron/jansson">Jasson</a> (o binário dessa lib já está no diretório ./lib, mas você pode baixá-la e fazer a build se preferir)
+
 ## Como Executar
 
-Há duas formas para executar o código disponibilizado, com docker ou sem.
+Há duas formas para executar o código disponibilizado: com docker ou sem.
 
 ### Sem docker
 
-No diretório raiz do projeto em um ambiente Linux e com GCC instalado execute os comandos:
+**Pré-requisitos:** Em um ambiente Linux com GCC instalado.
 
-- **make**
-- **./rinha-compiladores \<caminho arquivo json da AST\>**
+```console
+$ make 
+$ ./rinha-compiladores arquivo-da-ast.json
+```
 
 ### Com docker
 
-*O desafio espera que o arquivo json esteja exatamente do seguinte local no container: /var/rinha/source.rinha.json*
+**Pré-requisitos:** Docker instalado. 
 
-#### No diretório raiz do projeto em um ambiente com Docker instalado execute os comandos:
+*O desafio espera que o arquivo json esteja exatamente no seguinte caminho do container: /var/rinha/source.rinha.json*
 
-- **docker build -t rinha-compiladores .**
-- **docker run -v \<caminho do arquivo source.rinha.json no host\>:/var/rinha/source.rinha.json rinha-compiladores**
+#### No diretório raiz do projeto execute os comandos:
+
+```console
+$ docker build -t rinha-compiladores .
+$ docker run -v <arquivo source.rinha.json no host>:/var/rinha/source.rinha.json rinha-compiladores
+```
 
 #### Ou apenas use o docker-compose
 
-- **docker-compose up**
+*Lembre-se de alterar o caminho do arquivo json no campo **-volumes** do docker-compose.yaml*
+
+```console
+$ docker-compose up
+```
 
 #### Caso queira executar o código com qualquer arquivo json basta iniciar o docker no modo interativo mapeando o diretório com os arquivos
 
-- **docker run -v \<caminho do diretorio com arquivos json no host\>:\<caminho do diretorio para onde será mapeado no guest\> -it rinha-compiladores /bin/bash**
-- **./rinha-compiladores \<caminho arquivo json da AST no guest\>**
+```console
+$ docker run -it -v <diretorio com arquivos json no host>:<diretorio para onde será mapeado no guest> rinha-compiladores /bin/bash
+$ ./rinha-compiladores <caminho arquivo json da AST no guest>
+```
 

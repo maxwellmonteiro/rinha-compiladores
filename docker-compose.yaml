@@ -2,9 +2,9 @@ version: '3.7'
 services:
 
   rinha-compiladores:
-    image: rinha-compiladores:latest
+    image: maxwellmonteiro/rinha-compiladores:latest
     volumes:
-      - ./source.rinha.json:/var/rinha/source.rinha.json
+      - ./files/combination.json:/var/rinha/source.rinha.json
     deploy:
       resources:
         limits:
