@@ -1,0 +1,9 @@
+let a = "true" != "true";
+let b = "123" >= "432";
+let c = "123" <= "432";
+let d = true && false;
+let x = 2 * 2;
+let y = 4 / 2;
+let z = 5 % 2;
+
+print("a: " + a + " b: " + b + " c: " + c + " d: " + d + " x: " + x + " y: " + y + " z: " + z)

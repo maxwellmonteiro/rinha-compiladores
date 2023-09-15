@@ -1,0 +1,14 @@
+let sum = fn (n) => {
+  let a = 1 + 1;
+  let b = 2 + 1;
+  if (n < 5) {
+    let x = 100;
+    a + b + x
+  } else {
+    let z = 1;
+    let c = 7;
+    z + c
+  }
+};
+
+print (sum(1))

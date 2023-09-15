@@ -1,0 +1,29 @@
+let sum = fn (n) => {
+    if (n == 1) {
+      n
+    } else {
+      n + sum(n - 1)
+    }
+};
+
+let fib = fn (n) => {
+    if (n < 2) {
+        n
+    } else {
+        fib(n - 1) + fib(n - 2)
+    }
+};
+
+let combination = fn (n, k) => {
+    let a = k == 0;
+    let b = k == n;
+    if (a || b)
+    {
+        1
+    }
+    else {
+        combination(n - 1, k - 1) + combination(n - 1, k)
+    }
+};
+  
+print ("Hello world - sum: " + sum(5) + " fib: " + fib(10) + " combination: " + combination(10, 2))

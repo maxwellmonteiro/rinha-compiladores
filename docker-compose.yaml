@@ -1,0 +1,14 @@
+version: '3.7'
+services:
+
+  rinha-compiladores:
+    image: rinha-compiladores:latest
+    volumes:
+      - ./source.rinha.json:/var/rinha/source.rinha.json
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: '2GB'
+    
+    command: ["./rinha-compiladores", "/var/rinha/source.rinha.json"]
