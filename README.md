@@ -29,7 +29,7 @@ $ ./rinha-compiladores arquivo-da-ast.json
 
 ```console
 $ docker build -t rinha-compiladores .
-$ docker run -v <arquivo source.rinha.json no host>:/var/rinha/source.rinha.json rinha-compiladores
+$ docker run -v <caminho arquivo source.rinha.json no host>:/var/rinha/source.rinha.json rinha-compiladores
 ```
 
 #### Ou apenas use o docker-compose
