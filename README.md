@@ -1,10 +1,10 @@
 # Introdução
 
-Este código é uma implementação de um compilador source-to-source para participar do desafio <a href="https://raw.githubusercontent.com/aripiprazole/rinha-de-compiler">rinha de compiladores</a>. O qual recebe uma AST (Abstract Syntax Tree) como parâmentro em formato json, conforme o padrão estabelecido no desafio, e traduz para código em linguagem C, que por sua vez é compilado para binário e executado.
+Este código é uma implementação de um compilador source-to-source para participar do desafio <a href="https://github.com/aripiprazole/rinha-de-compiler">rinha de compiladores</a>. O qual recebe uma AST (Abstract Syntax Tree) como parâmentro em formato json, conforme o padrão estabelecido no desafio, e traduz para código em linguagem C, que por sua vez é compilado para binário e executado.
 
 ## Dependências
 
-- <a href="https://github.com/akheron/jansson">Jasson</a> (o binário dessa lib já está no diretório ./lib, mas você pode baixá-la e fazer a build se preferir)
+- <a href="https://github.com/akheron/jansson">Jansson</a> (o binário dessa lib já está no diretório ./lib, mas você pode baixá-la e fazer a build se preferir)
 
 ## Como Executar
 
