@@ -177,17 +177,17 @@ IR *transpiler_parse(json_t *expression, Context *context) {
                 if (result_value->type == IR_FUNCTION) {
                     Fn *fn = fn_new();
                     strncpy(fn->name, result_name, FUNCTION_MAX_NAME - 1);
-                    sprintf(fn->src, "DynamicType %s%s\n", result_name, result_value->exp);
+                    sprintf(fn->src, "_DynamicType %s%s\n", result_name, result_value->exp);
                     context->fn_list->push(context->fn_list, fn);
                     result->exp = transpiler_get_empty_str();
                 } else if (result_value->type == IR_BOOL) {
-                    sprintf(result->exp, "DynamicType %s = _dt_new_bool(%s);", result_name, result_value->exp);
+                    sprintf(result->exp, "_DynamicType %s = _dt_new_bool(%s);", result_name, result_value->exp);
                 } else if (result_value->type == IR_STR) {
-                    sprintf(result->exp, "DynamicType %s = _dt_new_str(%s);", result_name, result_value->exp);
+                    sprintf(result->exp, "_DynamicType %s = _dt_new_str(%s);", result_name, result_value->exp);
                 } else if (result_value->type == IR_INT) {
-                    sprintf(result->exp, "DynamicType %s = _dt_new_int(%s);", result_name, result_value->exp);
+                    sprintf(result->exp, "_DynamicType %s = _dt_new_int(%s);", result_name, result_value->exp);
                 } else {
-                    sprintf(result->exp, "DynamicType %s = %s;", result_name, result_value->exp);
+                    sprintf(result->exp, "_DynamicType %s = %s;", result_name, result_value->exp);
                 }
 
                 transpiler_free_ir(result_value);
@@ -204,9 +204,9 @@ IR *transpiler_parse(json_t *expression, Context *context) {
                     json_t *text = json_object_get(param, "text");
                     const char *result_param = json_string_value(text);
                     if (i >= (json_array_size(parameters) - 1)) {
-                        sprintf(result_parameters->exp, "%sDynamicType %s", result_parameters->exp, result_param);
+                        sprintf(result_parameters->exp, "%s_DynamicType %s", result_parameters->exp, result_param);
                     } else {
-                        sprintf(result_parameters->exp, "%sDynamicType %s,", result_parameters->exp, result_param);
+                        sprintf(result_parameters->exp, "%s_DynamicType %s,", result_parameters->exp, result_param);
                     }
                 }
 
@@ -254,12 +254,12 @@ IR *transpiler_parse(json_t *expression, Context *context) {
                     if (i >= (json_array_size(arguments) - 1)) {                        
                         sprintf(result_arguments->exp, "%s%s", result_arguments->exp, result_arg->exp);
                         if (!callee_found) {
-                            sprintf(callee_fn->args, "%.256sDynamicType p%d", callee_fn->args, i);
+                            sprintf(callee_fn->args, "%.256s_DynamicType p%d", callee_fn->args, i);
                         }
                     } else {
                         sprintf(result_arguments->exp, "%s%s,", result_arguments->exp, result_arg->exp);
                         if (!callee_found) {
-                            sprintf(callee_fn->args, "%.256sDynamicType p%d,", callee_fn->args, i);
+                            sprintf(callee_fn->args, "%.256s_DynamicType p%d,", callee_fn->args, i);
                         }
                     }
                     transpiler_free_ir(result_arg);
