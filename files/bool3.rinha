@@ -1,0 +1,15 @@
+let f = fn (flag) => {
+    if (flag) {
+        let a = 1;
+        let b = 2;
+        let c = 3;
+        a + b + c
+    } else {
+        let x = 9;
+        let y = 8;
+        let z = 7;
+        x + y + z
+    }
+};
+
+print("f-true: " + f(true) + " f-false: " + f(false))

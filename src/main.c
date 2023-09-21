@@ -6,11 +6,7 @@
 #include <stdbool.h>
 
 #define MAX_SRC_BUFFER 16384
-#define SIZE_OF_RETURN 8
-#define PADDING_SIZE 20
 #define MAX_FUNCTIONS 32
-#define MAX_ARGS_LEN 256
-#define MAX_PARAMS_LEN 256
 #define MAX_CMD_BUFFER 256
 
 void process_callees(FnList *fn_list, CalleeList *callee_list);

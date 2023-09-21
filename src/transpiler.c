@@ -122,8 +122,14 @@ IR *transpiler_parse(json_t *expression, Context *context) {
                     }
                 }
 
-                result = transpiler_alloc_ir(strlen(result_condition->exp) + strlen(result_then->exp) + strlen(result_otherwise->exp) + PADDING_SIZE);
-                sprintf(result->exp, "if (%s) {%s} else {%s}", result_condition->exp, result_then->exp, result_otherwise->exp);
+                json_t *condition_kind = json_object_get(condition, "kind");
+                if (condition_kind != NULL && term_get_kind(json_string_value(condition_kind)) == Var) {
+                    result = transpiler_alloc_ir(strlen(result_condition->exp) + strlen(result_then->exp) + strlen(result_otherwise->exp) + PADDING_SIZE + 12);                
+                    sprintf(result->exp, "if (_dt_get_bool(%s)) {%s} else {%s}", result_condition->exp, result_then->exp, result_otherwise->exp);
+                } else {
+                    result = transpiler_alloc_ir(strlen(result_condition->exp) + strlen(result_then->exp) + strlen(result_otherwise->exp) + PADDING_SIZE);                
+                    sprintf(result->exp, "if (%s) {%s} else {%s}", result_condition->exp, result_then->exp, result_otherwise->exp);
+                }
 
                 result->type = transpiler_eval_ir_type(result_then, result_otherwise);
 
