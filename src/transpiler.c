@@ -207,12 +207,15 @@ IR *transpiler_parse(json_t *expression, Context *context) {
                 int i;
                 IR *result_parameters = transpiler_alloc_ir(MAX_PARAMS_LEN);
                 json_array_foreach(parameters, i, param) {
+                    char temp_param[MAX_PARAMS_LEN];
                     json_t *text = json_object_get(param, "text");
                     const char *result_param = json_string_value(text);
                     if (i >= (json_array_size(parameters) - 1)) {
-                        sprintf(result_parameters->exp, "%s_DynamicType %s", result_parameters->exp, result_param);
+                        sprintf(temp_param, "_DynamicType %s", result_param);
+                        strcat(result_parameters->exp, temp_param);
                     } else {
-                        sprintf(result_parameters->exp, "%s_DynamicType %s,", result_parameters->exp, result_param);
+                        sprintf(temp_param, "_DynamicType %s,", result_param);
+                        strcat(result_parameters->exp, temp_param);
                     }
                 }
 
@@ -250,22 +253,29 @@ IR *transpiler_parse(json_t *expression, Context *context) {
 
                 Callee *callee_fn;
                 bool callee_found = context->callee_list->find(context->callee_list, result_callee->exp) != NULL;
+
+                // Se não encontrou a declaração da função da lista de funções é uma chamada já declarando a função, exemplo f(a, b) {...}
+                // Então vamos criar a funcão e inserir na lista de funções
                 if (!callee_found) {
                     callee_fn = callee_new();
                     strcpy(callee_fn->name, result_callee->exp);
                 }
 
                 json_array_foreach(arguments, i, arg) {
+                    char temp_args[CALLEE_MAX_ARGS];
                     result_arg = transpiler_parse(arg, context);
-                    if (i >= (json_array_size(arguments) - 1)) {                        
-                        sprintf(result_arguments->exp, "%s%s", result_arguments->exp, result_arg->exp);
+                    if (i >= (json_array_size(arguments) - 1)) {
+                        strcat(result_arguments->exp, result_arg->exp);
                         if (!callee_found) {
-                            sprintf(callee_fn->args, "%.256s_DynamicType p%d", callee_fn->args, i);
+                            sprintf(temp_args, "_DynamicType p%d", i);
+                            strcat(callee_fn->args, temp_args);
                         }
                     } else {
-                        sprintf(result_arguments->exp, "%s%s,", result_arguments->exp, result_arg->exp);
+                        strcat(result_arguments->exp, result_arg->exp);
+                        strcat(result_arguments->exp, ",");
                         if (!callee_found) {
-                            sprintf(callee_fn->args, "%.256s_DynamicType p%d,", callee_fn->args, i);
+                            sprintf(temp_args, "_DynamicType p%d,", i);
+                            strcat(callee_fn->args, temp_args);
                         }
                     }
                     transpiler_free_ir(result_arg);

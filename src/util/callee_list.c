@@ -12,6 +12,7 @@ static void destroy(CalleeList *self);
 Callee *callee_new() {
     Callee *callee = malloc(sizeof(Callee));
     callee->name[0] = 0;
+    callee->args[0] = 0;
     return callee;
 }
 

@@ -3,7 +3,7 @@ SOURCES_C = src/main.c src/transpiler.c src/term/term.c src/term/binary_term.c s
 INCLUDEDIR = ./include
 LIBDIR = ./lib
 CFLAGS_DEBUG = -g -Wl,-rpath -Wl,$(LIBDIR)
-CFLAGS_RELEASE = -pipe -Wall -O3 -Wl,-rpath -static -Wl,$(LIBDIR)
+CFLAGS_RELEASE = -pipe -Wrestrict -Wall -O3 -Wl,-rpath -static -Wl,$(LIBDIR)
 CFLAGS = $(CFLAGS_RELEASE)
 
 all: rinha-compiladores
