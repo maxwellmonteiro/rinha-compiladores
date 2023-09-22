@@ -1,9 +1,12 @@
 FROM gcc:13.2
 WORKDIR /usr/local/rinha-compiladores
 
-#RUN apt-get update && apt-get -y install time
+COPY Makefile .
+COPY src src
+COPY include include
+COPY lib lib
+COPY files files
 
-COPY ./rinha-compiladores ./
+RUN make clean all
 
-#CMD ["/usr/bin/time", "-p", "./rinha-compiladores", "/var/rinha/source.rinha.json"]
 CMD ["./rinha-compiladores", "/var/rinha/source.rinha.json"]
