@@ -32,7 +32,7 @@ int main(int argc, char **argv) {
     context_free(context);
 
     char command[MAX_CMD_BUFFER];
-    sprintf(command, "gcc -pipe -O3 a.c -o a.o");
+    sprintf(command, "gcc -w -pipe -O3 a.c -o a.o");
 
     FILE *file = fopen("a.c", "w");
     fwrite(main_result, sizeof(char), strlen(main_result), file);
