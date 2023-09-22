@@ -15,8 +15,10 @@ Há duas formas para executar o código disponibilizado: com docker ou sem.
 **Pré-requisitos:** Em um ambiente Linux com GCC instalado.
 
 ```console
-$ make 
-$ ./rinha-compiladores arquivo-da-ast.json
+make 
+```
+```console
+./rinha-compiladores arquivo-da-ast.json
 ```
 
 ### Com docker
@@ -28,8 +30,10 @@ $ ./rinha-compiladores arquivo-da-ast.json
 #### No diretório raiz do projeto execute os comandos:
 
 ```console
-$ docker build -t rinha-compiladores .
-$ docker run -v <caminho arquivo source.rinha.json no host>:/var/rinha/source.rinha.json rinha-compiladores
+docker build -t rinha-compiladores .
+```
+```console
+docker run -v <caminho arquivo source.rinha.json no host>:/var/rinha/source.rinha.json rinha-compiladores
 ```
 
 #### Ou apenas use o docker-compose
@@ -37,13 +41,15 @@ $ docker run -v <caminho arquivo source.rinha.json no host>:/var/rinha/source.ri
 *Lembre-se de alterar o caminho do arquivo json no campo **-volumes** do docker-compose.yaml*
 
 ```console
-$ docker-compose up
+docker-compose up
 ```
 
 #### Caso queira executar o código com qualquer arquivo json basta iniciar o docker no modo interativo mapeando o diretório com os arquivos
 
 ```console
-$ docker run -it -v <diretorio com arquivos json no host>:<diretorio para onde será mapeado no guest> rinha-compiladores /bin/bash
-$ ./rinha-compiladores <caminho arquivo json da AST no guest>
+docker run -it -v <diretorio com arquivos json no host>:<diretorio para onde será mapeado no guest> rinha-compiladores /bin/bash
+```
+```console
+./rinha-compiladores <caminho arquivo json da AST no guest>
 ```
 
