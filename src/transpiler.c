@@ -114,10 +114,10 @@ IR *transpiler_parse(json_t *expression, Context *context) {
                 IR *result_otherwise = transpiler_parse(otherwise, context);
 
                 if (context->place_return) {
-                    if (json_object_get(then, "next") == NULL) {
+                    if (json_object_get(then, "next") == NULL && term_get_kind(json_string_value(json_object_get(then, "kind"))) != If) {
                         transpiler_place_return(result_then);
                     }
-                    if (json_object_get(otherwise, "next") == NULL) {
+                    if (json_object_get(otherwise, "next") == NULL && term_get_kind(json_string_value(json_object_get(otherwise, "kind"))) != If) {
                         transpiler_place_return(result_otherwise);
                     }
                 }
