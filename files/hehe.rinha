@@ -1,0 +1,9 @@
+let he = fn (n, i) => {
+  if (i == 0) {
+    second(n)
+  } else {
+    he(second(n) + " hehe", i - 1)
+  }
+};
+
+print(he(("he", "hehe"), 254))

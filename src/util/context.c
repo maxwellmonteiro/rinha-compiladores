@@ -1,15 +1,15 @@
 #include "context.h"
 #include "fn_list.h"
+#include "var_list.h"
 #include <stdlib.h>
 #include <string.h>
 
 
-Context *context_new(size_t size) {
+Context *context_new(size_t max_func, size_t max_callee, size_t max_var) {
     Context *context = malloc(sizeof(Context));
 
-    context->fn_list = fn_list_new(size);
-    context->callee_list = callee_list_new(size);
-    context->place_return = false;
+    context->fn_list = fn_list_new(max_func);
+    context->callee_list = callee_list_new(max_callee);
 
     return context;
 }

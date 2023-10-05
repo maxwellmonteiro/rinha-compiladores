@@ -230,6 +230,7 @@ char *main_template =
             "dt = ((_DynamicTuple *) tuple.value)->second;"
         "} else {"
             "printf(\"Variável não é uma tupla\\n\");"
+            "dt = tuple;"
         "}"
         "return dt;"
     "}\n"

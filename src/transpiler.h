@@ -1,4 +1,6 @@
 #include "util/context.h"
+#include "util/dynamic_type.h"
+#include "util/scope.h"
 #include <inttypes.h>
 #include <jansson.h>
 
@@ -22,6 +24,6 @@ enum IR_TYPE {
 };
 
 extern void transpiler_free_ir(IR *ir);
-extern IR *transpiler_parse(json_t *expression, Context *context);
+extern _DynamicType transpiler_parse(json_t *expression, Context *context, Scope *scope);
 
 #endif

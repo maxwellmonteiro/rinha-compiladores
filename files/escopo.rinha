@@ -1,0 +1,12 @@
+let nil = 0;
+
+let map = fn (a) => {
+  if (a == 0) {
+    nil
+  } else {
+    let nil = 1;
+    nil
+  }
+};
+
+map(0)

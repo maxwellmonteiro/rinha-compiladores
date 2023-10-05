@@ -5,13 +5,14 @@
 
 static void push(FnList *self, Fn *value);
 static Fn *pop(FnList *self);
-static Fn *find(FnList *self, char *src);
+static Fn *find(FnList *self, const char *src);
 static bool is_full(FnList *self);
 static void destroy(FnList *self);
 
-Fn *fn_new() {
+Fn *fn_new(const char *name, json_t *src) {
     Fn* fn = malloc(sizeof(Fn));
-    fn->name[0] = 0;
+    strncpy(fn->name, name, FUNCTION_MAX_NAME - 1);
+    fn->src = src;
     return fn;
 }
 
@@ -44,7 +45,7 @@ Fn *pop(FnList *self) {
     return val;
 }
 
-Fn *find(FnList *self, char *name) {
+Fn *find(FnList *self, const char *name) {
     for (int i = 0; i < self->size; i++) {
         if (strcmp(self->values[i]->name, name) == 0) {
             return self->values[i];

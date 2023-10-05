@@ -1,0 +1,30 @@
+Quem quiser rodar os testes do jeito que elas rodaram:
+
+clone o repo do galop:
+$ git clone https://github.com/algebraic-sofia/galop/tree/main
+
+build o binário
+$ cd galop
+$ cargo build -r
+
+crie um diretório chamado submissions
+$ mkdir submissions
+
+crie um arquivo chamado participants.json:
+## Edite como quiser, dá pra colocar quantos participantes quiser também
+echo '[{
+  "name": "SEU NOME",
+  "repository": "URL DO REPO NO GITHUB",
+  "language": "A LINGUAGEM QUE USOU",
+  "type": "TIPO DE COMPILER/INTERPRETER",
+  "social": "PODE N TER NADA EU ACHO/SUA REDE SOCIAL"
+}]' | tee participants.json
+
+crie o arquivo de teste dentro de /media/ramdisk/tests como source.rinha.json e ou source.rinha
+rode o galop
+## precisa mover o galop de dentro da pasta que o cargo gerou
+$ mv target/release/galop galop
+$ ./galop run participants.json
+
+
+No final se deu tudo certo vai ter um arquivo dentro de submissions que vai descrever o que você conseguiu pontuar

@@ -1,4 +1,6 @@
+#include "../util/dynamic_type.h"
 #include <inttypes.h>
+#include <stdbool.h>
 
 #ifndef TERM_H
 #define TERM_H
@@ -36,5 +38,12 @@ typedef struct Term {
 
 extern Term *term_new(uint16_t kind);
 extern uint16_t term_get_kind(const char *kind_str);
+extern _DynamicType _dt_do_print(_DynamicType dt);
+extern _DynamicType _dt_new_tuple(_DynamicType first, _DynamicType second);
+extern _DynamicType _dt_get_tuple_first(_DynamicType tuple);
+extern _DynamicType _dt_get_tuple_second(_DynamicType tuple);
+extern _DynamicType _dt_new_int(int32_t value);
+extern _DynamicType _dt_new_str(const char *value);
+extern _DynamicType _dt_new_bool(bool value);
 
 #endif
