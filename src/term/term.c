@@ -70,6 +70,7 @@ char *_dt_do_sprintf(_DynamicType *dt) {
 _DynamicType _dt_do_print(_DynamicType dt) {
     char *str = _dt_do_sprintf(&dt);
     printf("%s\n", str);
+    fflush(stdout);
     return dt;
 }
 
