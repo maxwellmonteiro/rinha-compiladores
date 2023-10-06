@@ -6,7 +6,6 @@
 #define BINARY_NULL "BINARY_NULL"
 #define BINARY_NOT_FOUND 9999
 
-
 _DynamicType _dt_do_add_str(_DynamicType lhs, _DynamicType rhs);
 _DynamicType _dt_do_add(_DynamicType lhs, _DynamicType rhs);
 _DynamicType _dt_do_sub(_DynamicType lhs, _DynamicType rhs);
@@ -72,21 +71,12 @@ enum BINARY_ENUM {
 
 static const char *BINARY_STRING[] = {
     FOREACH_BINARY(GENERATE_STRING)
-        BINARY_NULL};
-
-static const char *BINARY_LOGIC_STRING[] = {
-    FOREACH_BINARY_LOGIC(GENERATE_STRING)
-    BINARY_NULL
-};
-
-static const char *BINARY_TARGET[] = {
-    FOREACH_BINARY_TARGET(GENERATE_STRING)
     BINARY_NULL
 };
 
 static binary_func_t BINARY_FUNC[] = {
     FOREACH_BINARY_TARGET(GENERATE_FUNC)
-    0
+    NULL
 };
 
 _DynamicType _dt_do_add_str(_DynamicType lhs, _DynamicType rhs) {
@@ -126,6 +116,7 @@ _DynamicType _dt_do_add(_DynamicType lhs, _DynamicType rhs) {
     }
     return result;
 }
+
 _DynamicType _dt_do_sub(_DynamicType lhs, _DynamicType rhs) {
     _DynamicType result;
     if (lhs.type != _DT_STR && rhs.type != _DT_STR) {
@@ -137,6 +128,7 @@ _DynamicType _dt_do_sub(_DynamicType lhs, _DynamicType rhs) {
     }
     return result;
 }
+
 _DynamicType _dt_do_mul(_DynamicType lhs, _DynamicType rhs) {
     _DynamicType result;
     if (lhs.type != _DT_STR && rhs.type != _DT_STR) {
@@ -148,6 +140,7 @@ _DynamicType _dt_do_mul(_DynamicType lhs, _DynamicType rhs) {
     }
     return result;
 }
+
 _DynamicType _dt_do_div(_DynamicType lhs, _DynamicType rhs) {
     _DynamicType result;
     if (lhs.type != _DT_STR && rhs.type != _DT_STR) {
@@ -159,6 +152,7 @@ _DynamicType _dt_do_div(_DynamicType lhs, _DynamicType rhs) {
     }
     return result;
 }
+
 _DynamicType _dt_do_rem(_DynamicType lhs, _DynamicType rhs) {
     _DynamicType result;
     if (lhs.type != _DT_STR && rhs.type != _DT_STR) {
@@ -170,6 +164,7 @@ _DynamicType _dt_do_rem(_DynamicType lhs, _DynamicType rhs) {
     }
     return result;
 }
+
 _DynamicType _dt_do_eq(_DynamicType lhs, _DynamicType rhs) {
     _DynamicType result = { _DT_BOOL, (size_t) false };
     if (lhs.type != _DT_STR && rhs.type != _DT_STR) {
@@ -180,6 +175,7 @@ _DynamicType _dt_do_eq(_DynamicType lhs, _DynamicType rhs) {
     }
     return result;
 }
+
 _DynamicType _dt_do_neq(_DynamicType lhs, _DynamicType rhs) {
     _DynamicType result = { _DT_BOOL, (size_t) false };
     if (lhs.type != _DT_STR && rhs.type != _DT_STR) {
@@ -190,6 +186,7 @@ _DynamicType _dt_do_neq(_DynamicType lhs, _DynamicType rhs) {
     }
     return result;
 }
+
 _DynamicType _dt_do_lt(_DynamicType lhs, _DynamicType rhs) {
     _DynamicType result = { _DT_BOOL, (size_t) false };
     if (lhs.type != _DT_STR && rhs.type != _DT_STR) {
@@ -200,6 +197,7 @@ _DynamicType _dt_do_lt(_DynamicType lhs, _DynamicType rhs) {
     }
     return result;
 }
+
 _DynamicType _dt_do_gt(_DynamicType lhs, _DynamicType rhs) {
     _DynamicType result = { _DT_BOOL, (size_t) false };
     if (lhs.type != _DT_STR && rhs.type != _DT_STR) {
@@ -210,6 +208,7 @@ _DynamicType _dt_do_gt(_DynamicType lhs, _DynamicType rhs) {
     }
     return result;
 }
+
 _DynamicType _dt_do_lte(_DynamicType lhs, _DynamicType rhs) {
     _DynamicType result = { _DT_BOOL, (size_t) false };
     if (lhs.type != _DT_STR && rhs.type != _DT_STR) {
@@ -220,6 +219,7 @@ _DynamicType _dt_do_lte(_DynamicType lhs, _DynamicType rhs) {
     }
     return result;
 }
+
 _DynamicType _dt_do_gte(_DynamicType lhs, _DynamicType rhs) {
     _DynamicType result = { _DT_BOOL, (size_t) false };
     if (lhs.type != _DT_STR && rhs.type != _DT_STR) {
@@ -230,6 +230,7 @@ _DynamicType _dt_do_gte(_DynamicType lhs, _DynamicType rhs) {
     }
     return result;
 }
+
 _DynamicType _dt_do_and(_DynamicType lhs, _DynamicType rhs) {
     _DynamicType result = { _DT_BOOL, (size_t) false };
     if (lhs.type != _DT_STR && rhs.type != _DT_STR)
@@ -240,6 +241,7 @@ _DynamicType _dt_do_and(_DynamicType lhs, _DynamicType rhs) {
     }
     return result;
 }
+
 _DynamicType _dt_do_or(_DynamicType lhs, _DynamicType rhs) {
     _DynamicType result = { _DT_BOOL, (size_t) false };
     if (lhs.type != _DT_STR && rhs.type != _DT_STR)
@@ -260,19 +262,6 @@ uint16_t binary_term_get_op(const char *op_str) {
     return BINARY_NOT_FOUND;
 }
 
-bool binary_term_is_logic_op(const char *op_str) {
-    for (int i = 0; strcmp(BINARY_LOGIC_STRING[i], BINARY_NULL) != 0; i++) {
-        if (strcmp(BINARY_LOGIC_STRING[i], op_str) == 0) {
-            return true;
-        }
-    }
-    return false;
-}
-
-const char *binary_term_get_op_target(uint16_t op) {
-    return BINARY_TARGET[op];
-}
-
-binary_func_t binary_term_get_op_func(uint16_t op) {
+inline binary_func_t binary_term_get_op_func(uint16_t op) {
     return BINARY_FUNC[op];
 }
