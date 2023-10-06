@@ -8,20 +8,6 @@ static const char *TERM_STRING[] = {
     TERM_NULL
 };
 
-static void destroy(Term *self) {
-    free(self);
-}
-
-Term *term_new(uint16_t kind) {
-    Term *self = (Term *) malloc(sizeof(Term));
-
-    self->kind = kind;
-
-    self->destroy = destroy;
-
-    return self;
-}
-
 uint16_t term_get_kind(const char *kind_str) {
     for (int i = 0; strcmp(TERM_STRING[i], TERM_NULL) != 0; i++) {
         if (strcmp(TERM_STRING[i], kind_str) == 0) {
@@ -32,16 +18,13 @@ uint16_t term_get_kind(const char *kind_str) {
 }
 
 size_t _dt_len(_DynamicType *dt) {
-    if (dt->type == _DT_STR)
-    {
+    if (dt->type == _DT_STR) {
         return strlen((char *)dt->value);
     }
-    else if (dt->type == _DT_BOOL)
-    {
+    else if (dt->type == _DT_BOOL) {
         return 6;
     }
-    else if (dt->type == _DT_INT)
-    {
+    else if (dt->type == _DT_INT) {
         return 11;
     }
     return _dt_len((_DynamicType *)&((_DynamicTuple *)dt->value)->first) + _dt_len((_DynamicType *)&((_DynamicTuple *)dt->value)->second) + 4;

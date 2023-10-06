@@ -1,10 +1,10 @@
 CC = gcc
-SOURCES_C = src/main.c src/transpiler.c src/term/term.c src/term/binary_term.c src/util/context.c src/util/fn_list.c src/util/callee_list.c src/util/var_list.c src/util/binding_list.c src/util/clojure.c src/util/scope.c
+SOURCES_C = src/main.c src/interpreter.c src/term/term.c src/term/binary_term.c src/util/binding_list.c src/util/closure.c
 INCLUDEDIR = ./include
 LIBDIR = ./lib
 CFLAGS_DEBUG = -g -Wl,-rpath -Wl,$(LIBDIR)
 CFLAGS_RELEASE = -pipe -Wrestrict -Wall -O3 -Wl,-rpath -static -Wl,$(LIBDIR)
-CFLAGS = $(CFLAGS_DEBUG)
+CFLAGS = $(CFLAGS_RELEASE)
 
 all: rinha-compiladores
 

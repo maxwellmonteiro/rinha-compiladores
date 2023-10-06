@@ -1,0 +1,7 @@
+let map = fn (f) => {
+    f(2)
+};
+
+let m = map(fn (x) => x * 2);
+
+print(m)

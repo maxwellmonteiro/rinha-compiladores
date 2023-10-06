@@ -1,8 +1,7 @@
 #include "binary_term.h"
 #include <stdlib.h>
 #include <string.h>
-#include "../transpiler.h"
-
+#include <stdio.h>
 
 #define BINARY_NULL "BINARY_NULL"
 #define BINARY_NOT_FOUND 9999
@@ -250,18 +249,6 @@ _DynamicType _dt_do_or(_DynamicType lhs, _DynamicType rhs) {
         printf("Or não implementado para Str");
     }
     return result;
-}
-
-static void destroy(BinaryTerm *self) {
-    free(self);
-}
-
-BinaryTerm *binary_term_new() {
-    BinaryTerm *self = (BinaryTerm *) malloc(sizeof(BinaryTerm));
-
-    self->destroy = destroy;
-
-    return self;
 }
 
 uint16_t binary_term_get_op(const char *op_str) {

@@ -30,13 +30,6 @@ enum TERM_ENUM {
     FOREACH_TERM(GENERATE_ENUM)
 };
 
-typedef struct Term {
-    uint16_t kind;
-    void *term;
-    void (*destroy)(struct Term *);
-} Term;
-
-extern Term *term_new(uint16_t kind);
 extern uint16_t term_get_kind(const char *kind_str);
 extern _DynamicType _dt_do_print(_DynamicType dt);
 extern _DynamicType _dt_new_tuple(_DynamicType first, _DynamicType second);

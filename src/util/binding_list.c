@@ -26,11 +26,11 @@ void binding_set_name(Binding *binding, const char *name) {
     strcpy(binding->name, name);    
 }
 
-BindingList *binding_list_new(size_t size) {
+BindingList *binding_list_new(size_t initial_size) {
     BindingList *self = malloc(sizeof(BindingList));
-    self->values = malloc(sizeof(Binding *) * size);
+    self->values = malloc(sizeof(Binding *) * initial_size);
     self->size = 0;
-    self->max_size = size;
+    self->max_size = initial_size;
     self->push = push;
     self->pop = pop;
     self->find = find;
@@ -41,8 +41,9 @@ BindingList *binding_list_new(size_t size) {
 
 void push(BindingList *self, Binding *value) {
     if (self->size >= self->max_size) {
-        printf("Tamanho lista excedido");
-        exit(EXIT_FAILURE);
+        size_t new_max_size = self->max_size * 2;
+        self->values = realloc(self->values, sizeof(Binding *) * new_max_size);
+        self->max_size = new_max_size;
     }
     self->values[self->size] = value;
     self->size++;
