@@ -16,6 +16,8 @@ typedef struct BindingList {
     int size;
     Binding **values;
     void (*push) (struct BindingList *, Binding *);
+    void (*push_all) (struct BindingList *, struct BindingList *);
+    void (*consume_all) (struct BindingList *, struct BindingList *);
     Binding *(*pop) (struct BindingList *);
     Binding *(*find) (struct BindingList *, const char *);
     bool (*is_full) (struct BindingList *);

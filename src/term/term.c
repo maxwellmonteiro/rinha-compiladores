@@ -3,6 +3,9 @@
 #include <string.h>
 #include <stdio.h>
 
+#define MAX_BOOL_STR_LEN 6
+#define MAX_INT32_STR_LEN 11
+
 static const char *TERM_STRING[] = {
     FOREACH_TERM(GENERATE_STRING)
     TERM_NULL
@@ -19,15 +22,15 @@ uint16_t term_get_kind(const char *kind_str) {
 
 size_t _dt_len(_DynamicType *dt) {
     if (dt->type == _DT_STR) {
-        return strlen((char *)dt->value);
+        return strlen((char *) dt->value);
     }
     else if (dt->type == _DT_BOOL) {
-        return 6;
+        return MAX_BOOL_STR_LEN;
     }
     else if (dt->type == _DT_INT) {
-        return 11;
+        return MAX_INT32_STR_LEN;
     }
-    return _dt_len((_DynamicType *)&((_DynamicTuple *)dt->value)->first) + _dt_len((_DynamicType *)&((_DynamicTuple *)dt->value)->second) + 4;
+    return _dt_len((_DynamicType *) &((_DynamicTuple *) dt->value)->first) + _dt_len((_DynamicType *) &((_DynamicTuple *) dt->value)->second) + 4;
 }
 
 char *_dt_do_sprintf(_DynamicType *dt) {
@@ -35,13 +38,13 @@ char *_dt_do_sprintf(_DynamicType *dt) {
     size_t len = _dt_len(dt);
     ret = malloc(sizeof(char) * len + 1);
     if (dt->type == _DT_INT) {
-        sprintf(ret, "%d", (int32_t)dt->value);
+        sprintf(ret, "%d", (int32_t) dt->value);
     }
     else if (dt->type == _DT_BOOL) {
         sprintf(ret, "%s", (bool) dt->value ? "true" : "false");
     }
     else if (dt->type == _DT_TUPLE) {
-        _DynamicTuple *tuple = (_DynamicTuple *)dt->value;
+        _DynamicTuple *tuple = (_DynamicTuple *) dt->value;
         sprintf(ret, "(%s, %s)", _dt_do_sprintf(&tuple->first), _dt_do_sprintf(&tuple->second));
     }
     else {
@@ -60,7 +63,7 @@ _DynamicType _dt_do_print(_DynamicType dt) {
 _DynamicType _dt_new_int(int32_t value) {
     _DynamicType dt;
     dt.type = _DT_INT;
-    dt.value = (size_t)value;
+    dt.value = (size_t) value;
     return dt;
 }
 

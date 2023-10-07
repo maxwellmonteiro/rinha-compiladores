@@ -10,6 +10,8 @@
 static size_t interpreter_get_init_pos_params(Closure *closure);
 static bool interpreter_is_function(json_t *json);
 static _DynamicType interpreter_parse_function(json_t *expression, Closure *closure);
+static _DynamicType interpreter_create_bind_closure(const char *name, json_t *value, Closure *closure);
+static _DynamicType interpreter_create_closure(json_t *value, Closure *closure);
 
 _DynamicType interpreter_parse(json_t *expression, Closure *closure) {
     json_t *kind_obj = json_object_get(expression, "kind");
@@ -80,14 +82,12 @@ _DynamicType interpreter_parse(json_t *expression, Closure *closure) {
 
                 json_t *value = json_object_get(expression, "value");
 
-                uint16_t inner_kind = term_get_kind(json_string_value(json_object_get(value, "kind")));
-
                 _DynamicType result_value;
-                if (inner_kind != Function) {
+
+                if (!interpreter_is_function(value)) {
                     result_value = interpreter_parse(value, closure);
                 } else {
-                    result_value.type = _DT_FUNC;
-                    result_value.value = (size_t) value;
+                    result_value = interpreter_create_bind_closure(result_name, value, closure);                    
                 }
                 Binding *binding = closure->binding_list->find(closure->binding_list, result_name);
                 if (binding != NULL) {
@@ -113,25 +113,32 @@ _DynamicType interpreter_parse(json_t *expression, Closure *closure) {
                 int i;
                 _DynamicType result_arg;
 
-                Closure *new_closure = closure_new(interpreter_parse_function);
-                closure_append(new_closure, closure);
+                BindingList *args_binding_list = binding_list_new(BINDING_LIST_INITIAL_SIZE);
                 json_array_foreach(arguments, i, arg) {
                     if (interpreter_is_function(arg)) { // anonymous function passed as argument
-                        result_arg.type = _DT_FUNC;
-                        result_arg.value = (size_t) arg;
+                        result_arg = interpreter_create_closure(arg, closure);
                     } else {
                         result_arg = interpreter_parse(arg, closure);
                     }
                     Binding *binding = binding_new(NULL, result_arg);
-                    new_closure->binding_list->push(new_closure->binding_list, binding);
+                    args_binding_list->push(args_binding_list, binding);
                 }
                 Binding *binding_fn = closure->binding_list->find(closure->binding_list, json_string_value(callee_text));
-                if (binding_fn != NULL) {
-                    result = new_closure->call((json_t *) binding_fn->value.value, new_closure);
+                if (binding_fn != NULL) {                    
+                    Closure *stored_closure = ((Closure *) binding_fn->value.value);
+                    Closure *temp_closure = closure_new(stored_closure->json);
+                    temp_closure->binding_list->push_all(temp_closure->binding_list, stored_closure->binding_list);
+                    temp_closure->binding_list->consume_all(temp_closure->binding_list, args_binding_list);
+                    result = interpreter_parse_function((json_t *) temp_closure->json, temp_closure);
+                    closure_free(temp_closure);
                 } else { // inline function. A linguagem proposta permite chamar uma funcao sem declará-la antes
-                    result = interpreter_parse(json_object_get(expression, "next"), new_closure);
+                    Closure *temp_closure = closure_new(json_object_get(expression, "next"));
+                    temp_closure->binding_list->push_all(temp_closure->binding_list, closure->binding_list);
+                    temp_closure->binding_list->consume_all(temp_closure->binding_list, args_binding_list);
+                    result = interpreter_parse(temp_closure->json, temp_closure);
+                    closure_free(temp_closure);
                 }
-                closure_free(new_closure);
+                args_binding_list->destroy(args_binding_list);
                 break;
             } case Print: {
                 json_t *value = json_object_get(expression, "value");
@@ -204,4 +211,24 @@ static _DynamicType interpreter_parse_function(json_t *expression, Closure *clos
     }
     json_t *value = json_object_get(expression, "value");
     return interpreter_parse(value, closure);
+}
+
+static _DynamicType interpreter_create_bind_closure(const char *name, json_t *value, Closure *closure) {
+    _DynamicType result_value;
+    result_value.type = _DT_FUNC;
+    Closure *new_closure = closure_new(value);
+    result_value.value = (size_t) new_closure;
+    new_closure->binding_list->push_all(new_closure->binding_list, closure->binding_list);
+    Binding *binding = binding_new(name, result_value);
+    new_closure->binding_list->push(new_closure->binding_list, binding);
+    return result_value;
+}
+
+static _DynamicType interpreter_create_closure(json_t *value, Closure *closure) {
+    _DynamicType result_value;
+    result_value.type = _DT_FUNC;
+    Closure *new_closure = closure_new(value);
+    result_value.value = (size_t) new_closure;
+    new_closure->binding_list->push_all(new_closure->binding_list, closure->binding_list);
+    return result_value;
 }

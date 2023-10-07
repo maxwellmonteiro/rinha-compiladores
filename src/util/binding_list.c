@@ -4,6 +4,8 @@
 #include <stdio.h>
 
 static void push(BindingList *self, Binding *value);
+static void push_all(BindingList *self, BindingList *other);
+static void consume_all(BindingList *self, BindingList *other);
 static Binding *pop(BindingList *self);
 static Binding *find(BindingList *self, const char *name);
 static bool is_full(BindingList *self);
@@ -32,6 +34,8 @@ BindingList *binding_list_new(size_t initial_size) {
     self->size = 0;
     self->max_size = initial_size;
     self->push = push;
+    self->push_all = push_all;
+    self->consume_all = consume_all;
     self->pop = pop;
     self->find = find;
     self->is_full = is_full;
@@ -47,6 +51,21 @@ void push(BindingList *self, Binding *value) {
     }
     self->values[self->size] = value;
     self->size++;
+}
+
+void push_all(BindingList *self, BindingList *other) {
+    for (int i = 0; i < other->size; i++) {
+        Binding *binding = binding_new(other->values[i]->name, other->values[i]->value);
+        self->push(self, binding);
+    }
+}
+
+void consume_all(BindingList *self, BindingList *other) {
+    for (int i = 0; i < other->size; i++) {
+        self->push(self, other->values[i]);
+        other->values[i] = NULL;
+    }
+    other->size = 0;
 }
 
 Binding *pop(BindingList *self) {

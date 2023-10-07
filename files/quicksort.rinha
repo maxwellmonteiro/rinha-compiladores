@@ -1,0 +1,96 @@
+let cons = fn (value, next) => {
+  ((1, value), next)
+};
+
+let nil = ((0, 0), 0);
+
+let map = fn (list, f) => {
+  let tag  = first(first(list));
+  let val  = second(first(list));
+  let rest = second(list);
+  if (tag == 1) { // if (list is Cons)
+    let new_val = f(val);
+    let new_rest = map(rest, f);
+    cons(new_val, new_rest)
+  } else {
+    nil
+  }
+};
+
+let filter = fn (list, f) => {
+  let tag  = first(first(list));
+  let val  = second(first(list));
+  let rest = second(list);
+  if (tag == 1) { // if (list is Cons)
+    let new_rest = filter(rest, f);
+    if (f(val)) {
+      cons(val, new_rest)
+    } else {
+      new_rest
+    }
+  } else {
+    nil
+  }
+};
+
+let list_to_string = fn (list) => {
+  let tag  = first(first(list));
+  let val  = second(first(list));
+  let rest = second(list);
+  if (tag == 1) { // if (list is Cons)
+    let rest_str = list_to_string(rest);
+    let str = val + " " + rest_str;
+    str
+  } else {
+    ""
+  }
+};
+
+let append = fn (list1, list2) => {
+  let tag1  = first(first(list1));
+  let val1  = second(first(list1));
+  let rest1 = second(list1);
+  if (tag1 == 1) { // if (list1 is Cons)
+    let new_rest1 = append(rest1, list2);
+    cons(val1, new_rest1)
+  } else {
+    list2
+  }
+};
+
+let quicksort = fn (list) => {
+  let tag  = first(first(list));
+  let val  = second(first(list));
+  let rest = second(list);
+  if (tag == 1) { // if (list is Cons)
+    let less = filter(rest, fn (x) => x < val);
+    let more = filter(rest, fn (x) => x >= val);
+    let sorted_less = quicksort(less);
+    let sorted_more = quicksort(more);
+    let sorted_list = append(sorted_less, cons(val, sorted_more));
+    sorted_list
+  } else {
+    nil
+  }
+};
+
+let replicate = fn (n, x) => {
+  if (n == 0) {
+    nil
+  } else {
+    cons(x, replicate(n - 1, x))
+  }
+};
+
+// map simple test
+let base_list     = cons(1, cons(2, cons(3, cons(4, cons(5, cons(6, cons(7, cons(8, cons(9, cons(10, cons(11, cons(12, cons(13, cons(14, cons(15, cons(16, nil))))))))))))))));
+let append_list   = append(base_list, append(base_list, map(base_list, fn (x) => x * 4)));
+let list          = append(append_list, replicate(100, 1));
+let map_list      = map(list, fn (x) => x * 2);
+let _             = print("@!quicksort::" + list_to_string(quicksort(append(map_list, list))));
+
+//let base_list     = cons(16, cons(15, cons(14, cons(13, cons(12, cons(11, cons(10, cons(9, cons(8, cons(7, cons(6, cons(5, cons(4, cons(3, cons(2, cons(1, nil))))))))))))))));
+//let base_list     = cons(16, cons(15, nil));
+//let _             = print("@!base_list::" + list_to_string(base_list));
+//let _             = print("@!quicksort::" + list_to_string(quicksort(base_list)));
+0

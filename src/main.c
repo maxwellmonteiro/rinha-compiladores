@@ -13,9 +13,9 @@ int main(int argc, char **argv) {
     json_t *json = json_load_file(argv[1], 0, NULL);
 
     json_t *expression = json_object_get(json, "expression");
-    Closure *closure = closure_new(interpreter_parse);
+    Closure *closure = closure_new(expression);
 
-    closure->call(expression, closure);
+    interpreter_parse(expression, closure);
 
     closure_free(closure);
 
